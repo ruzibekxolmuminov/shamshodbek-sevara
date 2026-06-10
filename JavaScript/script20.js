@@ -290,7 +290,26 @@ function escapeHtml(str) {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
 }
+document.getElementById('copyCardTrigger')?.addEventListener('click', async function () {
+    const cardNumber = document.getElementById('cardNumberText')?.textContent?.trim();
 
+    if (!cardNumber) return;
+
+    try {
+        await navigator.clipboard.writeText(cardNumber.replace(/\s+/g, ''));
+
+        const toast = document.getElementById('copyToast');
+        if (toast) {
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+    } catch (error) {
+        console.error('Copy failed:', error);
+    }
+});
 // ========== GUEST SELECTOR ==========
 (function() {
     const guestCountSpan = document.querySelector('.guest-count');
